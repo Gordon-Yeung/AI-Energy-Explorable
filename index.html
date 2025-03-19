@@ -4,380 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Hidden Cost of AI</title>
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-        }
-        
-        body {
-            background-color: #ffffff;
-            color: #000000;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-        
-        header {
-            display: flex;
-            align-items: center;
-            padding: 0.8rem 1rem;
-            border-bottom: 1px solid #e5e5e5;
-            background-color: #ffffff;
-        }
-        
-        .logo {
-            display: flex;
-            align-items: center;
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-right: 1rem;
-        }
-        
-        .nav-buttons {
-            display: flex;
-            gap: 1rem;
-            margin-left: auto;
-        }
-        
-        .nav-button {
-            padding: 0.5rem 1rem;
-            border-radius: 4px;
-            font-size: 0.9rem;
-            cursor: pointer;
-            text-decoration: none;
-        }
-        
-        .login {
-            background-color: #000000;
-            color: white;
-        }
-        
-        .signup {
-            border: 1px solid #e5e5e5;
-            color: #000000;
-        }
-        
-        /* Landing page styles */
-        .main-content {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 2rem;
-        }
-        
-        .hook-text {
-            font-size: 2rem;
-            font-weight: 600;
-            text-align: center;
-            max-width: 700px;
-            margin-bottom: 3rem;
-        }
-        
-        .input-container {
-            position: relative;
-            width: 100%;
-            max-width: 800px;
-            margin-bottom: 1rem;
-            border-radius: 0.75rem;
-            border: 1px solid #e5e5e5;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-            background-color: #fff;
-            padding: 1rem;
-        }
-        
-        .message-area {
-            min-height: 100px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #555;
-            font-size: 1.1rem;
-        }
-        
-        .input-bar {
-            width: 100%;
-            max-width: 800px;
-            display: flex;
-            align-items: center;
-            padding: 0.75rem 1rem;
-            border-radius: 0.75rem;
-            border: 1px solid #e5e5e5;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-            background-color: #fff;
-        }
-        
-        .input-text {
-            flex: 1;
-            border: none;
-            outline: none;
-            font-size: 1rem;
-            color: #333;
-        }
-        
-        .next-button {
-            background-color: #10a37f;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            padding: 0.5rem 1rem;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
-        
-        .next-button:hover {
-            background-color: #0d8c6d;
-        }
-        
-        .suggestions {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-top: 1.5rem;
-            justify-content: center;
-        }
-        
-        .suggestion {
-            padding: 0.5rem 1rem;
-            border-radius: 1.5rem;
-            border: 1px solid #e5e5e5;
-            font-size: 0.9rem;
-            cursor: pointer;
-        }
-        
-        /* Chat interface styles */
-        main {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 1rem;
-            width: 100%;
-            overflow-y: auto;
-        }
-        
-        .chat-container {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-            margin-bottom: 1rem;
-        }
-        
-        .message {
-            display: flex;
-            gap: 1rem;
-            padding: 1rem;
-            border-radius: 0.5rem;
-        }
-        
-        .ai-message {
-            background-color: #f7f7f8;
-        }
-        
-        .user-message {
-            background-color: #ffffff;
-        }
-        
-        .avatar {
-            width: 30px;
-            height: 30px;
-            border-radius: 3px;
-            background-color: #10a37f;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-            flex-shrink: 0;
-        }
-        
-        .user-avatar {
-            background-color: #6f42c1;
-        }
-        
-        .message-content {
-            flex: 1;
-        }
-        
-        .typing-animation {
-            display: inline-block;
-            width: 1.2rem;
-            height: 1.2rem;
-            margin-right: 0.5rem;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cg%3E%3Ccircle cx='4' cy='12' r='3' fill='%23000'%3E%3Canimate attributeName='opacity' from='1' to='.3' dur='1s' repeatCount='indefinite' begin='0'/%3E%3C/circle%3E%3Ccircle cx='12' cy='12' r='3' fill='%23000'%3E%3Canimate attributeName='opacity' from='1' to='.3' dur='1s' repeatCount='indefinite' begin='.2'/%3E%3C/circle%3E%3Ccircle cx='20' cy='12' r='3' fill='%23000'%3E%3Canimate attributeName='opacity' from='1' to='.3' dur='1s' repeatCount='indefinite' begin='.4'/%3E%3C/circle%3E%3C/g%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-size: contain;
-        }
-        
-        .options-container {
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-            margin-top: 1rem;
-        }
-        
-        .option-button {
-            padding: 0.75rem 1rem;
-            border: 1px solid #e5e5e5;
-            border-radius: 0.5rem;
-            background-color: #ffffff;
-            cursor: pointer;
-            text-align: left;
-            transition: background-color 0.2s;
-            font-size: 1rem;
-        }
-        
-        .option-button:hover {
-            background-color: #f0f0f0;
-        }
-        
-        .result-container {
-            display: none;
-            margin-top: 1rem;
-            padding: 1rem;
-            border-radius: 0.5rem;
-            background-color: #f0f8ff;
-            border-left: 4px solid #10a37f;
-        }
-        
-        .bold {
-            font-weight: bold;
-        }
-        
-        .chat-input-container {
-            position: sticky;
-            bottom: 1rem;
-            margin-top: auto;
-            padding: 1rem;
-            background-color: #f7f7f8;
-        }
-        
-        .chat-input-bar {
-            display: flex;
-            align-items: center;
-            padding: 0.75rem 1rem;
-            border-radius: 0.75rem;
-            border: 1px solid #e5e5e5;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-            background-color: #fff;
-        }
-        
-        .chat-input-text {
-            flex: 1;
-            border: none;
-            outline: none;
-            font-size: 1rem;
-            color: #333;
-        }
-        
-        .send-button {
-            background-color: #ececf1;
-            color: #acacbe;
-            border: none;
-            border-radius: 4px;
-            padding: 0.5rem;
-            margin-left: 0.5rem;
-            cursor: not-allowed;
-        }
-        
-        .correct-answer {
-            display: none;
-            margin-top: 1rem;
-            background-color: #f0fbf8;
-            border-left: 4px solid #10a37f;
-            padding: 1rem;
-            border-radius: 0.5rem;
-        }
-
-        .next-section {
-            display: none;
-            margin-top: 2rem;
-            text-align: center;
-        }
-        
-        .hidden {
-            display: none !important;
-        }
-        
-        @keyframes typing {
-            from { width: 0 }
-            to { width: 100% }
-        }
-        
-        .typing-text {
-            overflow: hidden;
-            white-space: nowrap;
-            margin: 0;
-            animation: typing 2s steps(40, end);
-        }
-        
-        /* Enter key animation */
-        @keyframes enterKey {
-            0% {
-                transform: scale(1);
-            }
-            50% {
-                transform: scale(0.95);
-            }
-            100% {
-                transform: scale(1);
-            }
-        }
-        
-        .enter-key {
-            display: inline-block;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            padding: 2px 8px;
-            font-size: 0.9em;
-            background-color: #f5f5f5;
-            margin: 0 3px;
-            animation: enterKey 2s infinite;
-        }
-        
-        .back-to-start {
-            position: fixed;
-            top: 80px;
-            left: 20px;
-            z-index: 1000;
-            display: flex;
-            align-items: center;
-            padding: 10px 15px;
-            background-color: #f0f0f0;
-            border-radius: 20px;
-            border: none;
-            color: #333;
-            font-weight: bold;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            cursor: pointer;
-        }
-        
-        footer {
-            text-align: center;
-            padding: 1rem;
-            font-size: 0.8rem;
-            color: #666;
-            border-top: 1px solid #e5e5e5;
-            background-color: #ffffff;
-        }
-        
-        .footer-links {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-        }
-        
-        .footer-link {
-            color: #666;
-            text-decoration: none;
-        }
-    </style>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/landing.css">
+    <link rel="stylesheet" href="css/chat.css">
+    <link rel="stylesheet" href="css/explorer.css">
 </head>
 <body>
     <header>
@@ -452,7 +82,7 @@
                             <p>The correct answer is <strong>D) A single query on ChatGPT</strong>, which uses 2.9 watt-hours of energy—more than any of the other activities listed here.</p>
                         </div>
                         <div class="next-section" id="next-section">
-                            <button id="nextPageButton" class="next-button">Continue to Learn More</button>
+                            <button id="exploreButton" class="next-button">Explore the Energy Impact</button>
                         </div>
                     </div>
                 </div>
@@ -471,6 +101,48 @@
         </div>
     </div>
     
+    <!-- Energy Explorer Page (Third Page) -->
+    <div id="explorer-page" class="hidden">
+        <button id="backToChatButton" class="back-to-start">
+            <span style="margin-right: 5px;">←</span> Back to chat
+        </button>
+        
+        <main>
+            <div class="chat-container">
+                <div class="message ai-message">
+                    <div class="avatar">AI</div>
+                    <div class="message-content">
+                        <p>Let's explore the energy impact of Large Language Models. Use the interactive visualization below to understand the environmental cost at different stages.</p>
+                    </div>
+                </div>
+                
+                <div id="energy-explorer-container">
+                    <!-- LLM Energy Explorer React Component will be rendered here -->
+                    <div id="react-root"></div>
+                </div>
+                
+                <div class="message ai-message">
+                    <div class="avatar">AI</div>
+                    <div class="message-content">
+                        <p>As you can see, the environmental impact of AI goes far beyond a single query. LLM training consumes massive amounts of energy, and the cumulative effect of billions of queries adds up quickly.</p>
+                        <p>Want to learn more about how you can make more sustainable AI choices?</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <div class="chat-input-container">
+            <div class="chat-input-bar">
+                <input type="text" class="chat-input-text" placeholder="Message AI Explorable">
+                <button class="send-button" style="background-color: #10a37f; color: white; cursor: pointer;">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M22 2L11 13M22 2L15 22L11 13M11 13L2 9L22 2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+    
     <footer>
         <div class="footer-links">
             <a href="#" class="footer-link">Terms</a>
@@ -479,83 +151,16 @@
         </div>
     </footer>
     
-    <script>
-        // Show landing page initially
-        document.getElementById('landing-page').classList.remove('hidden');
-        document.getElementById('chat-interface').classList.add('hidden');
-        
-        // Begin button takes you to the chat interface
-        document.getElementById('beginButton').addEventListener('click', function() {
-            document.getElementById('landing-page').classList.add('hidden');
-            document.getElementById('chat-interface').classList.remove('hidden');
-            
-            // Start the typing animation and question sequence
-            setTimeout(function() {
-                document.getElementById('typing-container').classList.add('hidden');
-                document.getElementById('question-text').classList.remove('hidden');
-                
-                // Show user message with options after question appears
-                setTimeout(function() {
-                    document.getElementById('user-message').classList.remove('hidden');
-                }, 1000);
-            }, 2000);
-        });
-        
-        // Make the suggestions clickable too
-        document.querySelectorAll('.suggestion').forEach(function(suggestion) {
-            suggestion.addEventListener('click', function() {
-                document.getElementById('beginButton').click();
-            });
-        });
-        
-        // Back button returns to landing page
-        document.getElementById('backButton').addEventListener('click', function() {
-            document.getElementById('chat-interface').classList.add('hidden');
-            document.getElementById('landing-page').classList.remove('hidden');
-            
-            // Reset the chat interface for next time
-            document.getElementById('typing-container').classList.remove('hidden');
-            document.getElementById('question-text').classList.add('hidden');
-            document.getElementById('user-message').classList.add('hidden');
-            document.getElementById('correct-answer').style.display = 'none';
-            document.getElementById('next-section').style.display = 'none';
-            
-            // Reset option button styling
-            document.querySelectorAll('.option-button').forEach(btn => {
-                btn.style.backgroundColor = '#ffffff';
-                btn.style.borderColor = '#e5e5e5';
-            });
-        });
-        
-        // Handle option selection
-        document.querySelectorAll('.option-button').forEach(button => {
-            button.addEventListener('click', function() {
-                const option = this.getAttribute('data-option');
-                
-                // Highlight selected option
-                document.querySelectorAll('.option-button').forEach(btn => {
-                    btn.style.backgroundColor = '#ffffff';
-                    btn.style.borderColor = '#e5e5e5';
-                });
-                
-                this.style.backgroundColor = option === 'D' ? '#edfdf8' : '#fff7f7';
-                this.style.borderColor = option === 'D' ? '#10a37f' : '#ff6b6b';
-                
-                // If correct answer (D) is selected
-                if (option === 'D') {
-                    document.getElementById('correct-answer').style.display = 'block';
-                    document.getElementById('next-section').style.display = 'block';
-                } else {
-                    // Show "try again" message
-                    alert('That\'s not correct. Try again!');
-                }
-            });
-        });
-        
-        // Handle next page button click
-        document.getElementById('nextPageButton').addEventListener('click', function() {
-            alert('This would take you to the next page in a full implementation.');
-        });
-    </script>
+    <!-- Load external libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.1/dist/umd/lucide.min.js"></script>
+    
+    <!-- Load application scripts -->
+    <script src="js/navigation.js"></script>
+    <script src="js/chat.js"></script>
+    <script type="text/babel" src="js/components/EnergyExplorer.js"></script>
+    <script src="js/app.js"></script>
 </body>
 </html>
